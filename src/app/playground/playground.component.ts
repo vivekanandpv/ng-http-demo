@@ -6,11 +6,12 @@ import { Todo } from '../_models/todo.model';
 @Component({
   selector: 'app-playground',
   templateUrl: './playground.component.html',
-  styleUrls: ['./playground.component.css']
+  styleUrls: ['./playground.component.css'],
 })
 export class PlaygroundComponent implements OnInit, OnDestroy {
   items$: Observable<Todo[]>;
   httpSubscription: Subscription;
+  display = false;
 
   constructor(private dataService: DataService) {}
 
@@ -24,16 +25,22 @@ export class PlaygroundComponent implements OnInit, OnDestroy {
         id: 100,
         completed: false,
         title: 'Title',
-        userId: 5012
+        userId: 5012,
       })
       .subscribe(
-        data => console.log('Http Post Success', data),
-        error => console.error('Http Post Failure', error),
+        (data) => console.log('Http Post Success', data),
+        (error) => console.error('Http Post Failure', error),
         () => console.log('Http Complete')
       );
   }
 
   ngOnDestroy(): void {
-    this.httpSubscription.unsubscribe();
+    if (this.httpSubscription) {
+      this.httpSubscription.unsubscribe();
+    }
+  }
+
+  toggle() {
+    this.display = !this.display;
   }
 }

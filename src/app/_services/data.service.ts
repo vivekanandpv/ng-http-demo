@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Todo } from '../_models/todo.model';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class DataService {
   constructor(private http: HttpClient) {}
@@ -23,8 +23,16 @@ export class DataService {
       .set('X-Custom-Header-B', 'Header-B-Value')
       .append('My-Header', 'My-Value');
 
-    return this.http.post('http://localhost:3000/api/items', item, {
-      headers: customHeaders
+    return this.http.post('https://reqres.in/api/users', item, {
+      headers: customHeaders,
     });
+  }
+
+  private personSubject = new BehaviorSubject<number>(1);
+  person$ = this.personSubject.asObservable();
+
+  inc() {
+    console.log(this.personSubject.observers.length);
+    this.personSubject.next(this.personSubject.value + 1);
   }
 }

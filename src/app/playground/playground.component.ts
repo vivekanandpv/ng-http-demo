@@ -10,9 +10,10 @@ import { Observable } from 'rxjs';
 export class PlaygroundComponent implements OnInit {
   items$: Observable<any[]>;
 
-  constructor(private dataService: DataService) {}
+  constructor(private dataService: DataService) {
+    this.items$ = this.dataService.getToDoItems();
+  }
 
   ngOnInit() {
-    this.items$ = this.dataService.getToDoItems();
   }
 }
